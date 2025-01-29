@@ -4,9 +4,9 @@
   "description": "Read through the Bible in a year!",
   "icons": [
     {
-      "src": "static/images/calendar.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "static/images/Calendar-Mark--Streamline-Sharp-Remix.svg",
+      "sizes": "24x24",
+      "type": "image/svg"
     }
   ],
   "start_url": "/index.html",
