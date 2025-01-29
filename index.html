@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- HTML Meta Tags -->
+  <title>Bible in a Year</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png"
+ href="static/images/calendar.png">
+ 
+<link rel="manifest" href="/app.webmanifest" crossorigin="use-credentials" />
+ 
+ <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-mono bg-neutral-900">
+  <main class="flex flex-col min-h-screen">
+    <header class="text-3xl bg-neutral-900 text-neutral-50 p-4 font-semibold">
+      Bible in a Year
+    </header>
+
+    <section class="flex flex-auto grow flex-col items-center justify-center text-neutral-900 bg-neutral-50">
+
+      <div class="flex flex-col items-center justify-center w-full h-full">
+        <p id="word" class="m-4 text-center text-2xl text-neutral-400"></p>
+        <p id="reference" class="m-4 self-end text-right text-lg text-neutral-400"></p>
+      </div>
+
+    </section>
+    <footer class="text-sm bg-neutral-900 text-neutral-50 p-4 font-semibold"> 
+      Site by @<a href="https://jdcowf.github.io" class="underline">jdcowf</a>
+      <br>
+      Site icon by <a target="_blank" class="underline" href="https://www.flaticon.com/free-icons/holy-week" title="holy week icons">kmg design</a>
+    </footer>
+  </main>
+</body>
+ 
+
+
+
+    <script>
+    
+function findNthWordInfo(text, n) {
+  // Split the text into lines
+  const lines = text.split('\n');
+
+  // Track the word count and process each line
+  let wordCount = 0;
+  let oneTime = true
+  let translation = null
+  for (const line of lines) {
+    if (oneTime) {
+      translation = line;
+      oneTime = false
+      console.log(translation)
+    }
+    // Match the reference at the start of the line
+    const match = line.match(/^(.*) (\d+:\d+)\s+(.*)$/);
+    if (!match) continue;
+
+    const book = match[1]; // Reference (e.g., Genesis 1:1)
+    const reference = match[2]; // Reference (e.g., Genesis 1:1)
+    const content = match[3]; // Line content after the reference
+
+    // Split the content into words
+    const words = content.split(/\s+/);
+
+    // Check if the nth word is in this line
+    if (wordCount + words.length >= n) {
+      const wordIndex = n - wordCount - 1; // Get the index of the nth word in this line
+      const nthWord = words[wordIndex]; // The nth word
+      return {
+        content: content,
+        word: nthWord,
+        book: book,
+        reference: reference,
+        index: wordIndex,
+        n: n,
+        translation: translation
+      };
+    }
+
+    // Increment the word count
+    wordCount += words.length;
+  }
+
+  // If the nth word is not found
+  return null;
+}
+
+function numWordsInText(text) {
+  // Split the text into lines
+  const lines = text.split('\n');
+
+  // Track the word count and process each line
+  let wordCount = 0;
+  for (const line of lines) {
+    // Match the reference at the start of the line
+    const match = line.match(/^(.*) (\d+:\d+)\s+(.*)$/);
+    if (!match) continue;
+
+    content = match[3]
+
+    // Split the content into words
+    const words = content.split(/\s+/);
+
+    // Increment the word count
+    wordCount += words.length;
+  }
+
+  // If the nth word is not found
+  return wordCount;
+}
+
+
+const fileUrl = 'static/data/asv.txt';
+
+let text_g = ""
+
+
+// Use fetch to load the file
+fetch(fileUrl)
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.text(); // Use response.text() for text files
+  })
+  .then((data) => {
+    text_g = data
+  })
+  .catch((error) => {
+    console.error('Error loading the file:', error);
+  });
+
+fetch(fileUrl)
+
+
+function update() {
+    const t = getSecondsSinceYearStart();
+    const interval = getWordCount() / getSecondsInYear();
+    let n = Math.floor(t * interval);
+
+    info = findNthWordInfo(text_g, n);
+
+    if (info) {
+        // Split words and wrap the current word in bold
+        let words = info.content.split(/\s+/);
+        words[info.index] = `<span class="font-bold text-neutral-900">${words[info.index]}</span>`; 
+
+        // Join words back into a string
+        let formattedText = words.join(" ");
+
+        // Update the HTML
+        document.getElementById("word").innerHTML = formattedText;
+        document.getElementById("reference").innerHTML = info.book + " " + info.reference
+        if (info.translation != null) {
+          document.getElementById("reference").innerHTML += " (" + info.translation + ")"
+        }
+    }
+}
+    
+setInterval(() => {
+  // Code to be executed every second
+  update();
+}, 1000);
+
+
+function getWordCount() {
+    return numWordsInText(text_g)
+}
+
+function getSecondsSinceYearStart() {
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1); // Jan 1st of this year
+  const diff = now.getTime() - startOfYear.getTime(); // Difference in milliseconds
+  return Math.floor(diff / 1000); // Convert to seconds
+}
+
+function getSecondsInYear() {
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1); // Jan 1st of this year
+  const startOfNextYear = new Date(now.getFullYear() + 1, 0, 1);
+  const diff = startOfNextYear.getTime() - startOfYear.getTime(); // Difference in milliseconds
+  return Math.floor(diff / 1000); // Convert to seconds
+}
+
+console.log(getSecondsSinceYearStart());
+
+    </script>
+</body>
+</html>
