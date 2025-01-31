@@ -5,8 +5,7 @@
   "icons": [
     {
       "src": "static/images/Calendar-Mark--Streamline-Sharp-Remix.svg",
-      "sizes": "24x24",
-      "type": "image/svg"
+      "type": "image/svg+xml"
     }
   ],
   "start_url": "/index.html",
