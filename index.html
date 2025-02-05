@@ -8,7 +8,7 @@
   <link rel="icon" type="image/svg+xml"
  href="static/images/Calendar-Mark--Streamline-Sharp-Remix.svg">
  
-<link rel="manifest" href="/app.webmanifest" crossorigin="use-credentials" />
+<link rel="manifest" href="app.webmanifest" crossorigin="use-credentials" />
  
  <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -155,7 +155,7 @@ function update() {
         document.getElementById("word").innerHTML = formattedText;
         document.getElementById("reference").innerHTML = info.book + " " + info.reference
         if (info.translation != null) {
-          document.getElementById("reference").innerHTML += " (" + info.translation + ")"
+          document.getElementById("reference").innerHTML += " <span id=\"translation\">(" + info.translation + ")</span>"
         }
     }
 }
@@ -164,6 +164,7 @@ setInterval(() => {
   // Code to be executed every second
   update();
 }, 1000);
+update()
 
 
 function getWordCount() {
@@ -183,9 +184,8 @@ function getSecondsInYear() {
   const startOfNextYear = new Date(now.getFullYear() + 1, 0, 1);
   const diff = startOfNextYear.getTime() - startOfYear.getTime(); // Difference in milliseconds
   return Math.floor(diff / 1000); // Convert to seconds
-}
+  }
 
-console.log(getSecondsSinceYearStart());
 
     </script>
 </body>
