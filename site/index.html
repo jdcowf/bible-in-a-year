@@ -12,6 +12,23 @@
 <link rel="manifest" href="app.webmanifest" crossorigin="use-credentials" />
  
  <script src="https://cdn.tailwindcss.com"></script>
+ <style>
+    .dropdown {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .dropdown a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    .dropdown a:hover {background-color: #f1f1f1}
+  </style>
 </head>
 
 <body class="font-mono bg-neutral-900">
@@ -34,6 +51,7 @@
       Free icons by <a target="_blank" class="underline" href="https://streamlinehq.com/">StreamlineHQ</a>
     </footer>
   </main>
+  <div id="dropdown" class="dropdown"></div>
 </body>
  
 
@@ -114,27 +132,8 @@ function numWordsInText(text) {
 }
 
 
-const fileUrl = 'static/data/asv.txt';
-
 let text_g = ""
-
-
-// Use fetch to load the file
-fetch(fileUrl)
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.text(); // Use response.text() for text files
-  })
-  .then((data) => {
-    text_g = data
-  })
-  .catch((error) => {
-    console.error('Error loading the file:', error);
-  });
-
-fetch(fileUrl)
+setTranslation("kjv")
 
 
 function update() {
@@ -156,7 +155,7 @@ function update() {
         document.getElementById("word").innerHTML = formattedText;
         document.getElementById("reference").innerHTML = info.book + " " + info.reference
         if (info.translation != null) {
-          document.getElementById("reference").innerHTML += " <span id=\"translation\">(" + info.translation + ")</span>"
+          document.getElementById("reference").innerHTML += ` <span id="translation" class="cursor-pointer">(${info.translation})</span>`;
         }
     }
 }
@@ -187,7 +186,57 @@ function getSecondsInYear() {
   return Math.floor(diff / 1000); // Convert to seconds
   }
 
+const translationsUrl = 'static/data/translations.json';
+let translations = [];
 
+fetch(translationsUrl)
+  .then((response) => response.json())
+  .then((data) => {
+    translations = data;
+    const dropdown = document.getElementById('dropdown');
+    translations.forEach((translation) => {
+      const a = document.createElement('a');
+      a.href = '#';
+      a.textContent = translation;
+      a.onclick = () => {
+        setTranslation(translation);
+        dropdown.style.display = 'none';
+      };
+      dropdown.appendChild(a);
+    });
+  })
+  .catch((error) => {
+    console.error('Error loading translations:', error);
+  });
+
+function setTranslation(translation) {
+  const fileUrl = `static/data/${translation}.txt`;
+
+  fetch(fileUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then((data) => {
+      text_g = data;
+      update();
+    })
+    .catch((error) => {
+      console.error('Error loading the file:', error);
+    });
+}
+document.addEventListener('click', (event) => {
+  const dropdown = document.getElementById('dropdown');
+  if (event.target.id === 'translation') {
+    dropdown.style.display = 'block';
+    dropdown.style.left = `${event.pageX - 100}px`;
+    dropdown.style.top = `${event.pageY}px`;
+  } else {
+    dropdown.style.display = 'none';
+  }
+});
     </script>
 </body>
 </html>
