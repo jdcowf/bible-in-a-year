@@ -231,8 +231,18 @@ document.addEventListener('click', (event) => {
   const dropdown = document.getElementById('dropdown');
   if (event.target.id === 'translation') {
     dropdown.style.display = 'block';
-    dropdown.style.left = `${event.pageX - 100}px`;
-    dropdown.style.top = `${event.pageY}px`;
+    let left = event.pageX;
+    let top = event.pageY;
+
+    // Ensure the dropdown stays within the viewport
+    const viewportWidth = window.innerWidth;
+    const dropdownWidth = dropdown.offsetWidth;
+    if (left + dropdownWidth > viewportWidth) {
+      left = viewportWidth - dropdownWidth - 4; // 4px padding from the edge
+    }
+
+    dropdown.style.left = `${left}px`;
+    dropdown.style.top = `${top}px`;
   } else {
     dropdown.style.display = 'none';
   }
