@@ -48,7 +48,19 @@
     <footer class="text-sm bg-neutral-900 text-neutral-50 p-4 font-semibold"> 
       Site by @<a href="https://jdcowf.github.io" class="underline">jdcowf</a>
       <br>
-      Free icons by <a target="_blank" class="underline" href="https://streamlinehq.com/">StreamlineHQ</a>
+      <details>
+        <summary>Acknowledgements</summary>
+        <p>
+        Free icons by <a target="_blank" class="underline" href="https://streamlinehq.com/">StreamlineHQ</a>
+        </p>
+        <p> 
+          <a href="https://lsvbible.com/" target="_blank" class="underline">The LSV Bible<a>
+          by
+          <a href="https://www.covenantpress.org" target="_blank" class="underline">Covenant Press</a>
+          is licensed under the 
+          <a target="_blank" class="underline" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 License</a>.
+        </p>
+      </details>
     </footer>
   </main>
   <div id="dropdown" class="dropdown"></div>
@@ -65,9 +77,9 @@ function findNthWordInfo(text, n) {
 
   // Track the word count and process each line
   let wordCount = 0;
-  let oneTime = true
+let oneTime = true
   let translation = null
-  for (const line of lines) {
+    for (const line of lines) {
     if (oneTime) {
       translation = line;
       oneTime = false
