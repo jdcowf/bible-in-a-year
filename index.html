@@ -86,7 +86,7 @@ let oneTime = true
       console.log(translation)
     }
     // Match the reference at the start of the line
-    const match = line.match(/^(.*) (\d+:\d+)\s+(.*)$/);
+    const match = line.match(/^[^ ]+ (\d+:\d+)\s+(.*)$/);
     if (!match) continue;
 
     const book = match[1]; // Reference (e.g., Genesis 1:1)
@@ -127,7 +127,7 @@ function numWordsInText(text) {
   let wordCount = 0;
   for (const line of lines) {
     // Match the reference at the start of the line
-    const match = line.match(/^(.*) (\d+:\d+)\s+(.*)$/);
+    const match = line.match(/^[^ ]+ (\d+:\d+)\s+(.*)$/);
     if (!match) continue;
 
     content = match[3]
