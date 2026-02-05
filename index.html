@@ -132,6 +132,7 @@ let oneTime = true
 
 function numWordsInText(text) {
   // Split the text into lines
+  const lines = text.split(/\r?\n|\r|\n/g);
 
   // Track the word count and process each line
   let wordCount = 0;
