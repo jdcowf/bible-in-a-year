@@ -50,16 +50,27 @@
       <br>
       <details>
         <summary>Acknowledgements</summary>
-        <p>
+        <ul class="list-disc list-inside">
+        <li>
         Free icons by <a target="_blank" class="underline" href="https://streamlinehq.com/">StreamlineHQ</a>
-        </p>
-        <p> 
+        </li>
+        <li>
+        The ASV Bible is used under public domain.
+        </li>
+        <li>
+        The KJV Bible is used under US public domain. Text courtesy of <a class="underline" href="www.BibleProtector.com">www.BibleProtector.com</a>
+        </li>
+        <li> 
           <a href="https://lsvbible.com/" target="_blank" class="underline">The LSV Bible<a>
           by
           <a href="https://www.covenantpress.org" target="_blank" class="underline">Covenant Press</a>
           is licensed under the 
           <a target="_blank" class="underline" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 License</a>.
-        </p>
+        </li>
+        <li>
+        The YLT Bible is used under public domain.
+        </li>
+        </ul>
       </details>
     </footer>
   </main>
@@ -73,7 +84,7 @@
     
 function findNthWordInfo(text, n) {
   // Split the text into lines
-  const lines = text.split('\n');
+  const lines = text.split(/\r?\n|\r|\n/g);
 
   // Track the word count and process each line
   let wordCount = 0;
@@ -121,7 +132,6 @@ let oneTime = true
 
 function numWordsInText(text) {
   // Split the text into lines
-  const lines = text.split('\n');
 
   // Track the word count and process each line
   let wordCount = 0;
@@ -139,7 +149,6 @@ function numWordsInText(text) {
     wordCount += words.length;
   }
 
-  // If the nth word is not found
   return wordCount;
 }
 
@@ -177,7 +186,6 @@ setInterval(() => {
   update();
 }, 1000);
 update()
-
 
 function getWordCount() {
     return numWordsInText(text_g)
